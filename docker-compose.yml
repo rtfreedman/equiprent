@@ -1,0 +1,26 @@
+version: "3"
+   
+services:
+  api:
+    container_name: er_api
+    build: .
+    network_mode: bridge
+    links:
+      - db:equiprent_db
+    ports:
+      - 8002:8002
+    volumes:
+      - /c/equiprent/:/app/
+
+  db:
+    container_name: er_db
+    image: postgres:14
+    network_mode: bridge
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=changeme
+    volumes:
+      - /c/equiprent/startup.sql:/docker-entrypoint-initdb.d/startup.sql
+    ports:
+      - 5445:5432
